@@ -1,14 +1,13 @@
-#flask run --reload
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from debugger import analyze_code
 
 app = Flask(__name__)
-CORS(app)  # Allow frontend to access API
+CORS(app)
 
 @app.route('/')
 def home():
-    return "Welcome to the AI Codesdf Debugger API!"
+    return render_template('index.html')  # Render the HTML page
 
 @app.route('/debug', methods=['POST'])
 def debug_code():

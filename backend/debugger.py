@@ -1,21 +1,22 @@
 import pylint.lint
-from io import StringIO
 import json
+import tempfile
+import os
 
 def analyze_code(code):
     # Save the user's code to a temporary file
-    temp_file = "temp_code.py"
-    with open(temp_file, "w") as f:
-        f.write(code)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".py") as temp_file:
+        temp_file.write(code.encode('utf-8'))
+        temp_file_path = temp_file.name
 
     # Run Pylint and capture the output
-    output = StringIO()
-    pylint_args = [temp_file, "--output-format=json"]
-    
+    pylint_args = [temp_file_path, "--output-format=json"]
+
     try:
-        pylint.lint.Run(pylint_args, do_exit=False)
-        lint_results = json.loads(output.getvalue())
+        results = pylint.lint.Run(pylint_args, do_exit=False).linter.reporter.data
     except Exception as e:
         return {"error": str(e)}
+    finally:
+        os.remove(temp_file_path)  # Clean up
 
-    return {"issues": lint_results}
+    return {"issues": results}
