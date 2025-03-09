@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 from flask_cors import CORS
 from debugger import analyze_code
 
@@ -7,18 +7,19 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html')  # Render the HTML page
+    return render_template('index.html')
 
-@app.route('/debug', methods=['POST'])
-def debug_code():
-    data = request.json
-    code = data.get('code', '')
+@app.route('/features')
+def features():
+    return render_template('features.html')
 
-    if not code:
-        return jsonify({'error': 'No code provided'}), 400
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
-    result = analyze_code(code)
-    return jsonify(result)
+@app.route('/try')
+def try_now():
+    return render_template('try.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,58 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AI Code Debugger</title>
-    <!-- Bootstrap CDN -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Hero Section Background */
+        .hero-section {
+            background: linear-gradient(to right, #000428, #004e92);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-dark bg-dark">
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">AI Code Debugger</a>
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='assets/symbol,jpg') }}" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
+                AI Code Debugger
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="#">Try Now</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <div class="text-center">
-            <h1 class="display-4">Welcome to AI Code Debugger</h1>
-            <p class="lead">Paste your Python code below to analyze it with Pylint.</p>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-3 fw-bold">AI-Powered Code Debugger</h1>
+            <p class="lead">Fix, Optimize, and Secure Your Code Instantly with AI</p>
+            <a href="#" class="btn btn-lg btn-light text-dark">Try It Now</a>
         </div>
+    </section>
 
-        <div class="card shadow p-4 mt-4">
-            <textarea id="codeInput" class="form-control" rows="6" placeholder="Enter your Python code here..."></textarea>
-            <button class="btn btn-primary mt-3 w-100" onclick="sendCode()">Analyze Code</button>
+    <!-- Features Section -->
+    <section class="container my-5">
+        <h2 class="text-center fw-bold mb-4">🚀 Advanced Features</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>🤖 AI Code Fixer</h5>
+                    <p>Automatically detects and fixes bugs, offering side-by-side comparisons.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>⚡ Code Optimization</h5>
+                    <p>Improves performance by optimizing loops, variables, and bad practices.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>🔒 Security Scanner</h5>
+                    <p>Identifies security vulnerabilities like SQL Injection & XSS.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>📝 Code Documentation</h5>
+                    <p>Automatically generates comments and documentation for better readability.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>🔄 Code Converter</h5>
+                    <p>Convert code from one language to another (e.g., Python → Java).</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow p-4">
+                    <h5>💬 AI Chatbot</h5>
+                    <p>Ask coding-related questions and get instant AI-powered solutions.</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div id="result" class="alert mt-4 d-none"></div>
-    </div>
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2025 AI Code Debugger</p>
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function sendCode() {
-            let code = document.getElementById("codeInput").value;
-
-            fetch("/debug", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ code: code })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let resultDiv = document.getElementById("result");
-                resultDiv.classList.remove("d-none");
-
-                if (data.error) {
-                    resultDiv.classList.add("alert-danger");
-                    resultDiv.innerHTML = "<strong>Error:</strong> " + data.error;
-                } else {
-                    resultDiv.classList.add("alert-success");
-                    resultDiv.innerHTML = "<strong>Linting Issues:</strong> <pre>" + JSON.stringify(data.issues, null, 2) + "</pre>";
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
 </body>
 </html>

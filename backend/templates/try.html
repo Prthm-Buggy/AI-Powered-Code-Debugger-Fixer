@@ -1,0 +1,15 @@
+{% include 'header.html' %}
+
+<!-- Try Now Page -->
+<section class="container my-5">
+    <h2 class="text-center fw-bold mb-4">Upload Your Code for AI Analysis</h2>
+    <form action="/analyze" method="post">
+        <div class="mb-3">
+            <label for="code" class="form-label">Paste Your Code:</label>
+            <textarea class="form-control" id="code" name="code" rows="6" placeholder="Enter your code here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Analyze Code</button>
+    </form>
+</section>
+
+{% include 'footer.html' %}
