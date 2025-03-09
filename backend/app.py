@@ -1,12 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 CORS(app)
 app.secret_key = "your_secret_key"  # Change this to a strong secret key
 
 # Dummy user database (Replace with a real database)
-users = {"admin": "password123", "user": "test123"}
+users = {
+    "admin": generate_password_hash("password123"),
+    "user": generate_password_hash("test123")
+}
 
 # Home Page
 @app.route('/')
@@ -35,12 +39,13 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Check credentials
-        if username in users and users[username] == password:
+        # Check credentials securely
+        if username in users and check_password_hash(users[username], password):
             session['user'] = username
+            flash("Login successful!", "success")
             return redirect(url_for('dashboard'))
         else:
-            return "Invalid username or password. <a href='/login'>Try again</a>"
+            flash("Invalid username or password.", "danger")
 
     return render_template('login.html')
 
@@ -48,6 +53,7 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session:
+        flash("Please log in first.", "warning")
         return redirect(url_for('login'))
     return render_template('dashboard.html', username=session['user'])
 
@@ -55,7 +61,13 @@ def dashboard():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    flash("You have been logged out.", "info")
     return redirect(url_for('login'))
+
+# Error Handling
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
