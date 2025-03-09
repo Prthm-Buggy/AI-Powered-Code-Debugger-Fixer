@@ -1,0 +1,6 @@
+│── frontend/          # React Frontend (Later)
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│
+│── README.md
